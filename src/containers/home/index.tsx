@@ -4,7 +4,7 @@ import { RootStateType } from '@/interface/Redux';
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { TYText, Modal, BrickButton } from 'tuya-panel-kit';
+import { TYText, Modal, BrickButton, Divider } from 'tuya-panel-kit';
 import DashBoard from '@/components/DashBoard';
 import Slide from '@/components/Slide';
 import NavBar from '@/components/NavBar';
@@ -16,7 +16,7 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
     super(props);
     this.state = {
       value: ['1'],
-      visible: false,
+      visible: true,
     };
   }
 
@@ -56,29 +56,65 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
         <DashBoard />
         <ScrollView />
         <View style={styles.bottomView}>
-          <View style={styles.flexAlignBetween}>
+          <View style={[styles.flexAlignBetween, styles.flexDirectionRow]}>
             <Switch />
             <Switch />
             <Switch />
           </View>
           <Slide />
-          <View style={styles.flexAlignBetween}>
+          <View style={[styles.flexAlignBetween, styles.flexDirectionRow]}>
             <NavBar></NavBar>
             <NavBar></NavBar>
             <NavBar></NavBar>
             <NavBar></NavBar>
           </View>
         </View>
-        <Modal visible={true} alignContainer="center">
-          <View style={styles.faultModal}>
-            <View>
-              <TYText color="red" align="center" weight="bold" size={36} text="设备冲突" />
-            </View>
-            <View>
-              <TYText color="red" align="center" weight="bold" size={36} text="与地暖模式发生冲突！" />
-            </View>
-            <View>
-              <BrickButton text="知道了" />
+        <Modal visible={this.state.visible} alignContainer="center">
+          <View style={[styles.flexAlignCenter, styles.flexDirectionRow]}>
+            <View style={[styles.faultModal]}>
+              <View style={[styles.faultModalTitle, styles.flexAlignCenter]}>
+                <TYText
+                  color="#999999"
+                  align="center"
+                  text="设备冲突"
+                  style={{ fontSize: Radio.convertX(14), textAlign: 'center' }}
+                />
+              </View>
+              <Divider color="#D8D8D8" width={Radio.convertX(275)} />
+              <View
+                style={[
+                  { flex: 1 },
+                  styles.flexAlignCenter,
+                ]}
+              >
+                <TYText
+                  color="#1A1A1A"
+                  align="center"
+                  text="与地暖模式发生冲突！"
+                  style={{ fontSize: Radio.convertX(17), textAlign: 'center' }}
+                />
+                <TYText
+                  color="#999999"
+                  align="center"
+                  text="故障码：0001"
+                  style={{ fontSize: Radio.convertX(14), textAlign: 'center' }}
+                />
+              </View>
+              <Divider color="#D8D8D8" width={Radio.convertX(275)} />
+              <TouchableOpacity onPress={
+                ()=>{
+                  this.setState({
+                    visible:false
+                  })
+                }
+              }>
+                <TYText
+                  color="#9FC4DF"
+                  align="center"
+                  text="知道了"
+                  style={{ fontSize: Radio.convertX(15), textAlign: 'center',paddingBottom:Radio.convertX(10),paddingTop:Radio.convertX(10) }}
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
@@ -88,10 +124,14 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
 }
 
 const styles = StyleSheet.create({
-  faultModal:{
+  faultModal: {
     width: Radio.convertX(275),
     height: Radio.convertX(205),
     backgroundColor: '#FFFFFF',
+  },
+  faultModalTitle: {
+    paddingTop: Radio.convertX(10),
+    paddingBottom: Radio.convertX(10),
   },
   wrap: {
     borderWidth: 1,
@@ -100,12 +140,13 @@ const styles = StyleSheet.create({
   },
   flexWrap: { flexWrap: 'wrap' },
   flexNoWrap: { flexWrap: 'nowrap' },
+  flexDirectionRow: { flexDirection: 'row' },
+  flexDirectionCol: { flexDirection: 'column' },
   flexAlignCenter: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   flexAlignBetween: {
-    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },

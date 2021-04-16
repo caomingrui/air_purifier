@@ -53,7 +53,7 @@ const router: Array<RouterType> = [
     name: 'main',
     component: Home,
     options: {
-      title: '111',
+      title: 'X3',
       ...options,
     },
   },

@@ -25,7 +25,7 @@ class DashBoard extends Component<DashBoardPropsType, DashBoardStateType> {
             stepValue={20}
             scaleHeight={20}
             scaleNumber={50}
-            style={{ width: Radio.convertX(272), height: Radio.convertY(272) }}
+            style={{ width: Radio.convertX(272), height: Radio.convertX(272) }}
             value={this.state.value}
             onValueChange={(v) => {
               this.setState({ value: v });
@@ -59,7 +59,6 @@ class DashBoard extends Component<DashBoardPropsType, DashBoardStateType> {
 interface StytleType {
   flexWrap: ViewStyle;
   flexAlignCenter: ViewStyle;
-  container: ViewStyle;
   boxView: ViewStyle;
   boxShodow: ViewStyle;
   circleView: ViewStyle;
@@ -73,18 +72,6 @@ const styles = StyleSheet.create<StytleType>({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  container: {
-    width: Radio.convertX(345),
-    height: Radio.convertY(305),
-    backgroundColor: 'rgba(255,255,255,0.17)',
-    borderRadius: Radio.convertX(20),
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    alignSelf: 'center',
-    marginBottom: Radio.convertY(15),
-  },
   boxView: {
     position: 'relative',
     flexDirection: 'row',
@@ -92,8 +79,8 @@ const styles = StyleSheet.create<StytleType>({
   circleView: {
     backgroundColor: '#fff',
     width: Radio.convertX(190),
-    height: Radio.convertY(190),
-    borderRadius: Radio.convertY(95),
+    height: Radio.convertX(190),
+    borderRadius: Radio.convertX(95),
     position: 'absolute',
     flexDirection: 'column',
   },

@@ -4,19 +4,43 @@ import { RootStateType } from '@/interface/Redux';
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { TYText } from 'tuya-panel-kit';
+import { TYText, Modal, BrickButton } from 'tuya-panel-kit';
 import DashBoard from '@/components/DashBoard';
 import Slide from '@/components/Slide';
 import NavBar from '@/components/NavBar';
+import Switch from '@/components/Switch';
 import Radio from '@/radio';
 
 class HomeLayout extends Component<HomePropsType, HomeStateType> {
   constructor(props: HomePropsType) {
     super(props);
-    this.state = {};
+    this.state = {
+      value: ['1'],
+      visible: false,
+    };
   }
 
+  closeModal = () => {
+    this.setState({ visible: false });
+  };
+
+  handleConfirm = (value: any) => {
+    this.setState({ visible: false, value });
+  };
+
   render(): JSX.Element {
+    const dataSource = [
+      {
+        key: '1',
+        title: '1',
+        value: '1',
+      },
+      {
+        key: '2',
+        title: '2',
+        value: '2',
+      },
+    ];
     return (
       <View style={styles.container}>
         {/* <Fault /> */}
@@ -32,21 +56,43 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
         <DashBoard />
         <ScrollView />
         <View style={styles.bottomView}>
-          <Slide />
-          <ScrollView />
           <View style={styles.flexAlignBetween}>
-            <NavBar />
-            <NavBar />
-            <NavBar />
-            <NavBar />
+            <Switch />
+            <Switch />
+            <Switch />
+          </View>
+          <Slide />
+          <View style={styles.flexAlignBetween}>
+            <NavBar></NavBar>
+            <NavBar></NavBar>
+            <NavBar></NavBar>
+            <NavBar></NavBar>
           </View>
         </View>
+        <Modal visible={true} alignContainer="center">
+          <View style={styles.faultModal}>
+            <View>
+              <TYText color="red" align="center" weight="bold" size={36} text="设备冲突" />
+            </View>
+            <View>
+              <TYText color="red" align="center" weight="bold" size={36} text="与地暖模式发生冲突！" />
+            </View>
+            <View>
+              <BrickButton text="知道了" />
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  faultModal:{
+    width: Radio.convertX(275),
+    height: Radio.convertX(205),
+    backgroundColor: '#FFFFFF',
+  },
   wrap: {
     borderWidth: 1,
     borderColor: 'red',
@@ -58,8 +104,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  flexAlignBetween:{
-    flexDirection:'row',
+  flexAlignBetween: {
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -68,7 +114,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F3F4F5',
   },
   bottomView: {
-    height: Radio.convertY(200),
     backgroundColor: '#FFFFFF',
     paddingLeft: Radio.convertX(30),
     paddingRight: Radio.convertX(30),

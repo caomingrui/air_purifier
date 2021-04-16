@@ -27,3 +27,9 @@ export interface NavBarPropsType {
 export interface NavBarStateType{
   [stateKey: string]: any;
 }
+export interface SwitchPropsType {
+  devInfo?: PanelInfo.DevInfo;
+}
+export interface SwitchStateType{
+  [stateKey: string]: any;
+}

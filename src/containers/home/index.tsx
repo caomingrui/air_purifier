@@ -81,12 +81,7 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
                 />
               </View>
               <Divider color="#D8D8D8" width={Radio.convertX(275)} />
-              <View
-                style={[
-                  { flex: 1 },
-                  styles.flexAlignCenter,
-                ]}
-              >
+              <View style={[{ flex: 1 }, styles.flexAlignCenter]}>
                 <TYText
                   color="#1A1A1A"
                   align="center"
@@ -101,18 +96,23 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
                 />
               </View>
               <Divider color="#D8D8D8" width={Radio.convertX(275)} />
-              <TouchableOpacity onPress={
-                ()=>{
+              <TouchableOpacity
+                onPress={() => {
                   this.setState({
-                    visible:false
-                  })
-                }
-              }>
+                    visible: false,
+                  });
+                }}
+              >
                 <TYText
                   color="#9FC4DF"
                   align="center"
                   text="知道了"
-                  style={{ fontSize: Radio.convertX(15), textAlign: 'center',paddingBottom:Radio.convertX(10),paddingTop:Radio.convertX(10) }}
+                  style={{
+                    fontSize: Radio.convertX(15),
+                    textAlign: 'center',
+                    paddingBottom: Radio.convertX(10),
+                    paddingTop: Radio.convertX(10),
+                  }}
                 />
               </TouchableOpacity>
             </View>

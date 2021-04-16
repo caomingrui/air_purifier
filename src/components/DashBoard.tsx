@@ -41,7 +41,6 @@ class DashBoard extends Component<DashBoardPropsType, DashBoardStateType> {
               unitSize={Radio.convertY(15)}
               valueColor="#333333"
               unitColor="#333333"
-              style={styles.numberText}
             ></UnitText>
             <TYText color="#D8DCE1" style={{ fontSize: Radio.convertY(13) }}>
               当前温度：34.1℃
@@ -63,7 +62,7 @@ interface StytleType {
   boxShodow: ViewStyle;
   circleView: ViewStyle;
   nameText: TextStyle;
-  numberText: TextStyle;
+  // numberText: TextStyle;
 }
 
 const styles = StyleSheet.create<StytleType>({
@@ -100,9 +99,9 @@ const styles = StyleSheet.create<StytleType>({
     marginTop: Radio.convertY(20),
     marginBottom: Radio.convertY(36),
   },
-  numberText: {
-    fontFamily: 'Cochin',
-  },
+  // numberText: {
+  //   fontFamily: 'Cochin',
+  // },
 });
 
 export default DashBoard;

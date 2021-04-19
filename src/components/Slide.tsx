@@ -3,10 +3,11 @@ import { SlidePropsType, SlideStateType } from '@/containers/interface';
 import { PanelInfo } from '@/interface/PanelInfo';
 import { RootStateType } from '@/interface/Redux';
 import { StyleSheet, View, ViewStyle, TextStyle, Image } from 'react-native';
-import { Slider, TYText } from 'tuya-panel-kit';
+import { Slider, TYSdk } from 'tuya-panel-kit';
 import Radio from '@/radio';
 import { connect } from 'react-redux';
 import Images from '@/asset';
+import Dp from '@/dp';
 
 class Slide extends Component<SlidePropsType, SlideStateType> {
   constructor(props: SlideStateType) {
@@ -16,9 +17,25 @@ class Slide extends Component<SlidePropsType, SlideStateType> {
     };
   }
   _handleComplete = (value: any) => {
-    this.setState({ value: Math.round(value) });
+    let valToCode = value===0 ? 'low' : value===50 ? 'mid' : value===100 ? 'high' : ''
+    this.setState({ value: Math.round(value) },()=>{
+      TYSdk.device.putDeviceData({[Dp.acSpeed]:valToCode})
+    });
   };
+  componentWillReceiveProps(nextProps: any) {
+    //componentWillReceiveProps方法中第一个参数代表即将传入的新的Props
+    console.log(nextProps)
+    if (this.props.sharecard_show !== nextProps.sharecard_show) {
+      //在这里我们仍可以通过this.props来获取旧的外部状态
+      //通过新旧状态的对比，来决定是否进行其他方法
+      if (nextProps.sharecard_show) {
+        // this.handleGetCard();
+      }
+    }
+  }
+
   render(): JSX.Element {
+    let defaultVal = this.props.dpState.ac_speed==='low' ? 0 : this.props.dpState.ac_speed==='mid' ? 50 : this.props.dpState.ac_speed==='high' ? 100 : 0;
     let range: { [key: string]: any } = {};
     this.props.schema.ac_speed.range.map(function (item: any) {
       if (item === 'low') {
@@ -41,6 +58,7 @@ class Slide extends Component<SlidePropsType, SlideStateType> {
     let parameter = {
       lowimg: Images[`speed1`],
       highimg: Images[`speed`],
+      defaultVal,
       range,
     };
     return (
@@ -60,16 +78,16 @@ class Slide extends Component<SlidePropsType, SlideStateType> {
             maximumValue={parameter.range.high.value}
             minimumValue={parameter.range.low.value}
             stepValue={50}
-            value={parameter.range.mid.value}
+            value={parameter.defaultVal}
             maximumTrackTintColor="#9FC4DF"
             minimumTrackTintColor="#ECF3F9"
             onSlidingComplete={this._handleComplete}
             // thumbTouchSize={{ width: Radio.convertX(30), height: Radio.convertX(30) }}
             // thumbTintColor='rgba(0,0,0,0)'
             renderThumb={() => (
-              <View style={[styles.sliderView,styles.flexAlignCenter]}>
+              <View style={[styles.sliderView, styles.flexAlignCenter]}>
                 <Image
-                  resizeMode='cover'
+                  resizeMode="cover"
                   // style={{ width: Radio.convertX(17), height: Radio.convertX(33) }}
                   source={Images.slide}
                 ></Image>

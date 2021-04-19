@@ -1,12 +1,16 @@
-const power = 'power';
-const mode = 'mode';
-const wind = 'wind';
+const power = 'Power';
+const mode = 'Mode';
+const acWind = 'ac_wind';
 const dingshi = 'dingshi';
+const tempSet = 'TempSet';
+const acSpeed = 'ac_speed';
 const Dp:{ [key: string]: string } = {
   mode,
   power,
-  wind,
-  dingshi
+  acWind,
+  dingshi,
+  tempSet,
+  acSpeed
 };
 
 export default Dp;

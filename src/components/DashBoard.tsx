@@ -6,6 +6,7 @@ import { StyleSheet, View, ViewStyle, TextStyle } from 'react-native';
 import { UnitText, TYText, Progress,TYSdk } from 'tuya-panel-kit';
 import Radio from '@/radio';
 import { connect } from 'react-redux';
+import Dp from '@/dp';
 
 class DashBoard extends Component<DashBoardPropsType, DashBoardStateType> {
   constructor(props: DashBoardStateType) {
@@ -13,13 +14,17 @@ class DashBoard extends Component<DashBoardPropsType, DashBoardStateType> {
     this.state = {
       value: this.props.dpState.TempSet,
     };
+    console.log(this.state)
   }
   render(): JSX.Element {
     let parameter = {
+      TempSet:this.props.dpState.TempSet,
       TempCurrent:this.props.dpState.TempCurrent,
       TempCurrentName:this.props.schema.TempCurrent.name,
       TempCurrentUnit:this.props.schema.TempCurrent.unit,
     };
+    console.log(parameter)
+    let {value}=this.state
     return (
       <View>
         <View style={styles.flexAlignCenter}>
@@ -37,18 +42,19 @@ class DashBoard extends Component<DashBoardPropsType, DashBoardStateType> {
             max={30}
             // endColor="#FF4800"
             style={{ width: Radio.convertX(272), height: Radio.convertX(272) }}
-            value={this.state.value}
+            value={parameter.TempSet}
             onValueChange={(v) => {
-              this.setState({ value: v },(value:any)=>:any{
-                console.log(value)
+              this.setState({ value: v },()=>{
+                console.log(this.state)
               });
+              TYSdk.device.putDeviceData({[Dp.tempSet]:v})
             }}
           />
           <View
             style={[styles.circleView, styles.boxShodow, styles.flexAlignCenter, styles.flexWrap]}
           >
             <UnitText
-              value={this.state.value}
+              value={parameter.TempSet}
               size={Radio.convertY(65)}
               unit="celsius"
               unitSize={Radio.convertY(15)}
@@ -105,7 +111,6 @@ const styles = StyleSheet.create<StytleType>({
   },
   nameText: {
     fontSize: Radio.convertX(13),
-    fontFamily: 'PingFangSC-Regular, PingFang SC',
     width: Radio.convertX(105),
     textAlign: 'center',
     color: '#666666',

@@ -13,8 +13,9 @@ import Radio from '@/radio';
 import Images from '@/asset';
 import Dp from '@/dp';
 import Strings from '@/i18n';
+import { cos } from 'react-native-reanimated';
 
-const { mode, power, wind, dingshi } = Dp;
+const { mode, power, acWind, dingshi } = Dp;
 class HomeLayout extends Component<HomePropsType, HomeStateType> {
   constructor(props: HomePropsType) {
     super(props);
@@ -25,6 +26,11 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
     };
   }
 
+  componentDidMount = () => {
+    const localizedText = Strings.getLang('hello');
+console.log(localizedText);
+  };
+
   closeModal = () => {
     this.setState({ visible: false });
   };
@@ -33,8 +39,20 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
     this.setState({ visible: false, value });
   };
 
+  test = () => {
+    console.log()
+  }
+
   showSwith = () => {
+    let defaultVal = this.props.dpState.vt_mode;
     let switchdata = this.props.schema.vt_mode.range.map((item: any, index: any) => {
+      let value;
+      if(item===defaultVal){
+        value=true;
+      }else{
+        value=false;
+      }
+      // console.log(value)
       let title =
         item === 'Auto'
           ? '自动'
@@ -45,16 +63,30 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
           : item === 'Standard'
           ? '普通'
           : '';
-      return <Switch key={index} title={title} value={item} />;
+      return <Switch key={index} title={title} value={value} />;
     });
     return switchdata;
   };
 
   showBottom = (k: string) => {
     let text;
-    text = Strings.getDpLang(`${Dp[k]}`);
+    let img;
+    if(k===dingshi){
+      text = Strings.getLang(`dsc_${k}`, 'name');
+    }else{
+      text = Strings.getDpLang(`${k}`);
+    }
+    if(k===mode){
+      img=Images.mode
+    }else if(k===power){
+      img=Images.power
+    }else if(k===acWind){
+      img=Images.wind
+    }else if(k===dingshi){
+      img=Images.dingshi
+    }
     let parameter: { [key: string]: any } = {
-      img: Images[`${k}`],
+      img,
       text,
     };
     if (k === mode) {
@@ -78,7 +110,7 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
           };
         }),
       };
-    } else if (k === wind) {
+    } else if (k === acWind) {
       parameter.popup = {
         initValue: this.props.dpState.ac_wind,
         range: this.props.schema.ac_wind.range.map(function (item: any, index: any) {
@@ -126,7 +158,7 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
         value: '2',
       },
     ];
-    const navdata = ['power', 'mode', 'wind', 'dingshi'];
+    const navdata = ['Power', 'Mode', 'ac_wind', 'dingshi'];
     return (
       <View style={styles.container}>
         {/* <Fault /> */}

@@ -3,32 +3,36 @@ import { PanelInfo } from '@/interface/PanelInfo';
 
 export interface HomePropsType extends BaseContainerPropsType {
   devInfo: PanelInfo.DevInfo;
+  dpState: any;
+  route:any;
+  schema:any;
+  navigation:any;
 }
 export interface HomeStateType {
   [stateKey: string]: any;
 }
 
 export interface DashBoardPropsType {
-  devInfo?: PanelInfo.DevInfo;
+  [stateKey: string]: any;
 }
 export interface DashBoardStateType{
   [stateKey: string]: any;
 }
 
 export interface SlidePropsType {
-  devInfo?: PanelInfo.DevInfo;
+  [stateKey:string]:any
 }
 export interface SlideStateType{
   [stateKey: string]: any;
 }
 export interface NavBarPropsType {
-  devInfo?: PanelInfo.DevInfo;
+  [stateKey:string]:any
 }
 export interface NavBarStateType{
   [stateKey: string]: any;
 }
 export interface SwitchPropsType {
-  devInfo?: PanelInfo.DevInfo;
+  [stateKey:string]:any
 }
 export interface SwitchStateType{
   [stateKey: string]: any;

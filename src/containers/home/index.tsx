@@ -4,16 +4,21 @@ import { RootStateType } from '@/interface/Redux';
 import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import { TYText, Modal, BrickButton, Divider } from 'tuya-panel-kit';
+import { TYText, Modal, Divider } from 'tuya-panel-kit';
 import DashBoard from '@/components/DashBoard';
 import Slide from '@/components/Slide';
 import NavBar from '@/components/NavBar';
 import Switch from '@/components/Switch';
 import Radio from '@/radio';
+import Images from '@/asset';
+import Dp from '@/dp';
+import Strings from '@/i18n';
 
+const { mode, power, wind, dingshi } = Dp;
 class HomeLayout extends Component<HomePropsType, HomeStateType> {
   constructor(props: HomePropsType) {
     super(props);
+    console.log(props)
     this.state = {
       value: ['1'],
       visible: true,
@@ -26,6 +31,86 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
 
   handleConfirm = (value: any) => {
     this.setState({ visible: false, value });
+  };
+
+  showSwith = () => {
+    let switchdata = this.props.schema.vt_mode.range.map((item: any, index: any) => {
+      let title =
+        item === 'Auto'
+          ? '自动'
+          : item === 'Exchange'
+          ? '热交换'
+          : item === 'Bypass'
+          ? '旁通'
+          : item === 'Standard'
+          ? '普通'
+          : '';
+      return <Switch key={index} title={title} value={item} />;
+    });
+    return switchdata;
+  };
+
+  showBottom = (k: string) => {
+    let text;
+    text = Strings.getDpLang(`${Dp[k]}`);
+    let parameter: { [key: string]: any } = {
+      img: Images[`${k}`],
+      text,
+    };
+    if (k === mode) {
+      parameter.popup = {
+        initValue: this.props.dpState.Mode,
+        range: this.props.schema.Mode.range.map(function (item: any, index: any) {
+          let title =
+            item === 'cold'
+              ? '制冷'
+              : item === 'hot'
+              ? '制热'
+              : item === 'wet'
+              ? '除湿'
+              : item === 'wind'
+              ? '送风'
+              : '';
+          return {
+            key: `${index}`,
+            title: title,
+            value: item,
+          };
+        }),
+      };
+    } else if (k === wind) {
+      parameter.popup = {
+        initValue: this.props.dpState.ac_wind,
+        range: this.props.schema.ac_wind.range.map(function (item: any, index: any) {
+          let title =
+            item === '0xff'
+              ? '不支持'
+              : item === '0x01'
+              ? '摆动'
+              : item === '0x02'
+              ? '停止1'
+              : item === '0x03'
+              ? '停止2'
+              : item === '0x04'
+              ? '停止3'
+              : item === '0x05'
+              ? '停止4'
+              : item === '0x06'
+              ? '停止5'
+              : item === '0x07'
+              ? '停止6'
+              : item === '0x08'
+              ? '停止7'
+              : '';
+          return {
+            key: `${index}`,
+            title: title,
+            value: item,
+          };
+        }),
+      };
+    }
+    return <NavBar key={k} parameter={parameter} />;
   };
 
   render(): JSX.Element {
@@ -41,6 +126,7 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
         value: '2',
       },
     ];
+    const navdata = ['power', 'mode', 'wind', 'dingshi'];
     return (
       <View style={styles.container}>
         {/* <Fault /> */}
@@ -56,17 +142,10 @@ class HomeLayout extends Component<HomePropsType, HomeStateType> {
         <DashBoard />
         <ScrollView />
         <View style={styles.bottomView}>
-          <View style={[styles.flexAlignBetween, styles.flexDirectionRow]}>
-            <Switch />
-            <Switch />
-            <Switch />
-          </View>
+          <View style={[styles.flexAlignBetween, styles.flexDirectionRow]}>{this.showSwith()}</View>
           <Slide />
           <View style={[styles.flexAlignBetween, styles.flexDirectionRow]}>
-            <NavBar></NavBar>
-            <NavBar></NavBar>
-            <NavBar></NavBar>
-            <NavBar></NavBar>
+            {navdata.map((k) => this.showBottom(k))}
           </View>
         </View>
         <Modal visible={this.state.visible} alignContainer="center">
@@ -158,8 +237,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     paddingLeft: Radio.convertX(30),
     paddingRight: Radio.convertX(30),
-    paddingTop: Radio.convertX(30),
-    paddingBottom: Radio.convertX(30),
+    paddingTop: Radio.convertX(20),
+    paddingBottom: Radio.convertX(28),
   },
 });
 

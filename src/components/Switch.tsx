@@ -1,34 +1,35 @@
 import React, { Component } from 'react';
 import { SwitchPropsType, SwitchStateType } from '@/containers/interface';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { SwitchButton, TYText } from 'tuya-panel-kit';
+import { TYText } from 'tuya-panel-kit';
+import SwitchButton from '@/components/switch-button';
 import Radio from '@/radio';
 
 class Switch extends Component<SwitchPropsType, SwitchStateType> {
   constructor(props: SwitchStateType) {
     super(props);
     this.state = {
-      value: this.props.value,
+      value: false,
     };
   }
   render(): JSX.Element {
-    const { title, value } = this.props;
+    const { title, value, test } = this.props;
     return (
         <View style={[styles.boxView, styles.flexAlignCenter]}>
         <TYText>{title}</TYText>
         <SwitchButton
-          value={value}
+          value={this.state.value}
           onValueChange={(value) => {
             console.log(value)
-            this.setState({ value });
+            this.setState({ value:value });
+            test(title)
           }}
           tintColor="#E0E0E0"
           onTintColor="#9FC4DF"
           // thumbTintColor="red"
-          // size={{width:Radio.convertX(38),height:Radio.convertX(13)}}
-          size={{ height: 13, width: 38 }}
-          theme={{ margin: 0 }}
-          style={{ marginRight: 0, borderRadius: 0 }}
+          size={{width:Radio.convertX(38),height:Radio.convertX(13),margin:0}}
+          theme={{ margin: 0,thumbSize:Radio.convertX(19) }}
+          style={{ borderRadius: 0 }}
           thumbStyle={{ borderRadius: 0, width: Radio.convertX(19), height: Radio.convertX(19) }}
         />
       </View>
@@ -40,9 +41,15 @@ interface StytleType {
   flexWrap: ViewStyle;
   flexAlignCenter: ViewStyle;
   boxView: ViewStyle;
+  wrap: ViewStyle;
 }
 
 const styles = StyleSheet.create<StytleType>({
+  wrap: {
+    borderWidth: 1,
+    borderColor: 'red',
+    borderStyle: 'solid',
+  },
   flexWrap: { flexWrap: 'wrap' },
   flexAlignCenter: {
     justifyContent: 'center',

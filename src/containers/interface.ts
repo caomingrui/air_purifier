@@ -7,6 +7,7 @@ export interface HomePropsType extends BaseContainerPropsType {
   route:any;
   schema:any;
   navigation:any;
+  dataObj?:any;
 }
 export interface HomeStateType {
   [stateKey: string]: any;
@@ -35,5 +36,11 @@ export interface SwitchPropsType {
   [stateKey:string]:any
 }
 export interface SwitchStateType{
+  [stateKey: string]: any;
+}
+export interface MadalPropsType {
+  [stateKey:string]:any
+}
+export interface MadalStateType{
   [stateKey: string]: any;
 }

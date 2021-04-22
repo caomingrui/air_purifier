@@ -10,6 +10,7 @@ import notice from '../res/notice.png';
 import power from '../res/power.png';
 import setting from '../res/setting.png';
 import slide from '../res/slide.png';
+import slide1 from '../res/slide1.png';
 import speed1 from '../res/speed1.png';
 import speed from '../res/speed.png';
 import tipbg from '../res/tipbg.png';
@@ -18,6 +19,7 @@ import winslide from '../res/winslide.png';
 import yezi from '../res/yezi.png';
 import yueer from '../res/yueer.png';
 import zhileng from '../res/zhileng.png';
+import warm from '../res/warm.png';
 
 const Images: { [key: string]: number } = {
   circle,
@@ -32,6 +34,7 @@ const Images: { [key: string]: number } = {
   power,
   setting,
   slide,
+  slide1,
   speed1,
   speed,
   tipbg,
@@ -40,5 +43,6 @@ const Images: { [key: string]: number } = {
   yezi,
   yueer,
   zhileng,
+  warm
 };
 export default Images;

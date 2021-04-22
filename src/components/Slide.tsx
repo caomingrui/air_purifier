@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { SlidePropsType, SlideStateType } from '@/containers/interface';
 import { PanelInfo } from '@/interface/PanelInfo';
 import { RootStateType } from '@/interface/Redux';
-import { StyleSheet, View, ViewStyle, TextStyle, Image } from 'react-native';
-import { Slider, TYSdk } from 'tuya-panel-kit';
+import { StyleSheet, View, ViewStyle, TextStyle, Image, ImageBackground } from 'react-native';
+import { TYSdk } from 'tuya-panel-kit';
+import Slider from '@/components/slider';
 import Radio from '@/radio';
 import { connect } from 'react-redux';
 import Images from '@/asset';
@@ -17,14 +18,14 @@ class Slide extends Component<SlidePropsType, SlideStateType> {
     };
   }
   _handleComplete = (value: any) => {
-    let valToCode = value===0 ? 'low' : value===50 ? 'mid' : value===100 ? 'high' : ''
-    this.setState({ value: Math.round(value) },()=>{
-      TYSdk.device.putDeviceData({[Dp.acSpeed]:valToCode})
+    let valToCode = value === 0 ? 'low' : value === 50 ? 'mid' : value === 100 ? 'high' : '';
+    this.setState({ value: Math.round(value) }, () => {
+      TYSdk.device.putDeviceData({ [Dp.acSpeed]: valToCode });
     });
   };
   componentWillReceiveProps(nextProps: any) {
     //componentWillReceiveProps方法中第一个参数代表即将传入的新的Props
-    console.log(nextProps)
+    console.log(nextProps);
     if (this.props.sharecard_show !== nextProps.sharecard_show) {
       //在这里我们仍可以通过this.props来获取旧的外部状态
       //通过新旧状态的对比，来决定是否进行其他方法
@@ -35,7 +36,14 @@ class Slide extends Component<SlidePropsType, SlideStateType> {
   }
 
   render(): JSX.Element {
-    let defaultVal = this.props.dpState.ac_speed==='low' ? 0 : this.props.dpState.ac_speed==='mid' ? 50 : this.props.dpState.ac_speed==='high' ? 100 : 0;
+    let defaultVal =
+      this.props.dpState.ac_speed === 'low'
+        ? 0
+        : this.props.dpState.ac_speed === 'mid'
+        ? 50
+        : this.props.dpState.ac_speed === 'high'
+        ? 100
+        : 0;
     let range: { [key: string]: any } = {};
     this.props.schema.ac_speed.range.map(function (item: any) {
       if (item === 'low') {
@@ -82,15 +90,31 @@ class Slide extends Component<SlidePropsType, SlideStateType> {
             maximumTrackTintColor="#9FC4DF"
             minimumTrackTintColor="#ECF3F9"
             onSlidingComplete={this._handleComplete}
+            thumbStyle={{
+              width: Radio.convertX(17),
+              height: Radio.convertX(33),
+              borderWidth: 1,
+              borderColor: 'rgba(0,0,0,0.0)',
+              borderStyle: 'solid',
+              shadowColor: 'rgba(0,0,0,0.1)',
+              borderRadius: Radio.convertX(17),
+              shadowOffset: {
+                width: Radio.convertX(17),
+                height: Radio.convertX(17),
+              },
+              shadowOpacity: 1,
+              // shadowRadius: Radio.convertX(33),
+              elevation: Radio.convertX(17),
+            }}
             // thumbTouchSize={{ width: Radio.convertX(30), height: Radio.convertX(30) }}
-            // thumbTintColor='rgba(0,0,0,0)'
+            thumbTintColor="transparent"
             renderThumb={() => (
-              <View style={[styles.sliderView, styles.flexAlignCenter]}>
-                <Image
+              <View style={[styles.flexAlignCenter]}>
+                <ImageBackground
                   resizeMode="cover"
-                  // style={{ width: Radio.convertX(17), height: Radio.convertX(33) }}
+                  style={[{ width: Radio.convertX(17), height: Radio.convertX(33) }]}
                   source={Images.slide}
-                ></Image>
+                ></ImageBackground>
               </View>
             )}
           />
@@ -106,6 +130,7 @@ class Slide extends Component<SlidePropsType, SlideStateType> {
 }
 
 interface StytleType {
+  wrap: ViewStyle;
   flexWrap: ViewStyle;
   flexAlignCenter: ViewStyle;
   boxView: ViewStyle;
@@ -114,6 +139,11 @@ interface StytleType {
 }
 
 const styles = StyleSheet.create<StytleType>({
+  wrap: {
+    borderWidth: 1,
+    borderColor: 'red',
+    borderStyle: 'solid',
+  },
   flexWrap: { flexWrap: 'wrap' },
   flexAlignCenter: {
     justifyContent: 'center',
@@ -125,15 +155,15 @@ const styles = StyleSheet.create<StytleType>({
     marginBottom: Radio.convertX(30),
   },
   boxShodow: {
-    elevation: 10, //  设置阴影角度，通过这个设置有无阴影（这个是最重要的，决定有没有阴影）
+    elevation: 20, //  设置阴影角度，通过这个设置有无阴影（这个是最重要的，决定有没有阴影）
     shadowColor: 'black', //  阴影颜色
-    shadowOffset: { width: 0, height: 0 }, // 阴影偏移
+    shadowOffset: { width: 6, height: 6 }, // 阴影偏移
     shadowOpacity: 1, // 阴影不透明度
     shadowRadius: 10, //  圆角
   },
   sliderView: {
-    width: Radio.convertX(17),
-    height: Radio.convertX(33),
+    // width: Radio.convertX(17),
+    // height: Radio.convertX(33),
   },
 });
 const mapStateToProps = ({ dpState, devInfo }: RootStateType) => ({
